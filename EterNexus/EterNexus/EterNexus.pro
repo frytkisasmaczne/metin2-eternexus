@@ -4,8 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webkit network
+QT       += core gui network
 
+# To enable the built-in web view (ads/telemetry, requires Qt WebKit):
+#   DEFINES += USE_WEBVIEW
+#   QT += webkit
 TARGET = EterNexus
 TEMPLATE = app
 
@@ -21,8 +24,7 @@ SOURCES += main.cpp\
     Global/Version.cpp \
     Global/log.c \
     ArchivationHandler.cpp \
-    ExtractionHandler.cpp \
-    Language.cpp
+    ExtractionHandler.cpp
 
 HEADERS  += EterNexus.h \
     API/EterPackAPI.hpp \
@@ -33,8 +35,7 @@ HEADERS  += EterNexus.h \
     Global/Global.h \
     UI/About.h \
     Global/Version.h \
-    Global/log.h \
-    Language.h
+    Global/log.h
 
 FORMS    += EterNexus.ui \
     UI/Settings.ui \
