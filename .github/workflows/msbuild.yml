@@ -13,14 +13,56 @@ jobs:
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
-      - name: Build EterNexus (Release)
+
+      - name: Install LZO via vcpkg
         run: |
-          msbuild EterNexus\EterNexus.sln /p:Configuration=Release
+          vcpkg install lzo:x86-windows
+          vcpkg integrate install
+
+      - name: Build EterPack API (Release)
+        run: |
+          msbuild "EterPack API\EterPack API.sln" /p:Configuration=Release /p:Platform=Win32 /p:PlatformToolset=v143
+
+      - name: Stage EterPackAPI library for EterNexus build
+        shell: pwsh
+        run: |
+          $lib = Get-ChildItem -Path "EterPack API" -Recurse -Filter "EterPackAPI.lib" | Select-Object -First 1 -ExpandProperty FullName
+          $dll = Get-ChildItem -Path "EterPack API" -Recurse -Filter "EterPackAPI.dll" | Select-Object -First 1 -ExpandProperty FullName
+          Write-Host "Found lib: $lib"
+          Write-Host "Found dll: $dll"
+          Copy-Item $lib "EterNexus\EterNexus\API\EterPackAPI.lib"
+          Copy-Item $dll "EterNexus\EterNexus\API\EterPackAPI.dll"
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win32_msvc2019'
+
+      - name: Setup MSVC x86 environment for nmake
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x86
+
+      - name: Build EterNexus (Release)
+        shell: cmd
+        run: |
+          cd "EterNexus\EterNexus"
+          qmake EterNexus.pro CONFIG+=release
+          nmake release
+
+      - name: Collect distributable artifacts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist
+          Copy-Item "EterNexus\EterNexus\release\EterNexus.exe" dist\
+          Copy-Item "EterNexus\EterNexus\API\EterPackAPI.dll" dist\
+          windeployqt --release dist\EterNexus.exe
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: EterNexus-Release
-          path: |
-            EterNexus\EterNexus\Release\
-            EterNexus\EterNexus\bin\Release\
+          path: dist\

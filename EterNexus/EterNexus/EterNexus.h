@@ -4,9 +4,11 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QFile>
-#include <QWebView>
 #include <QLayout>
 #include <QDesktopServices>
+#ifdef USE_WEBVIEW
+#include <QWebView>
+#endif
 
 #define WINVER 0x0500
 #include <Windows.h>

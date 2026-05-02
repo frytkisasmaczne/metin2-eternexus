@@ -2,7 +2,7 @@
 #include "EterIndex.h"
 #include "EterPack.h"
 
-#pragma comment(lib, "lzo")
+#pragma comment(lib, "lzo2")
 
 #define DLL_EXPORT extern "C" __declspec(dllexport)
 #define PLIST EterIndexItem **
@@ -27,7 +27,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved)
 
 DLL_EXPORT const char *API_Copyright(void)
 {
-	return "EterPack API © 2013-2014, Crysus Technologies";
+	return "EterPack API ï¿½ 2013-2014, Crysus Technologies";
 }
 
 DLL_EXPORT const char *API_Version(void)

@@ -109,6 +109,7 @@ void EterNexus::UpdateAds(const char *szUpdateMode, const char *szFilename)
     }
 
     // Get only information about the client
+#ifdef USE_WEBVIEW
     static QWebView *webView_ = NULL;
     if(webView_ == NULL)
     {
@@ -119,6 +120,7 @@ void EterNexus::UpdateAds(const char *szUpdateMode, const char *szFilename)
     }
 
     webView_->load(QUrl(QString(szWebInfoData)));
+#endif
 
     // Stop here if is only information gathering
     if(!strcmp(szUpdateMode, "FILEOPEN") || !strcmp(szUpdateMode, "FILECREATE"))
@@ -128,6 +130,7 @@ void EterNexus::UpdateAds(const char *szUpdateMode, const char *szFilename)
     if(g_show_ads)
     {
 #endif
+#ifdef USE_WEBVIEW
             QWebView *webView = new QWebView(this);
 
             if(webView != NULL)
@@ -140,7 +143,7 @@ void EterNexus::UpdateAds(const char *szUpdateMode, const char *szFilename)
                 connect(webView, SIGNAL(linkClicked(QUrl)), this, SLOT(LinkHandler(QUrl)));
                 this->layout()->addWidget(webView);
             }
-
+#endif
 #ifndef ADWARE_VERSION
     }
 #endif
