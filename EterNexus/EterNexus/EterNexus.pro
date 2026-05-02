@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT       += core gui network widgets
 
 # To enable the built-in web view (ads/telemetry, requires Qt WebKit):
 #   DEFINES += USE_WEBVIEW

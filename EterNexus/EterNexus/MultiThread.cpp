@@ -90,8 +90,8 @@ void PackThread::run()
     UINT32 iOutSize = 0, iHashCRC32 = 0;
     QString szFileVirtualPath = GetDiffFromPaths(this->lFilesList.at(this->iPointer), this->szDirectoryPath).toLower();
 
-    PutFileData(this->pEpkInstance, this->lFilesList.at(this->iPointer++).toAscii().data(), g_storage_type, &iOutSize, &iHashCRC32);
-    PutFile(this->pEixInstance, GetIntelVirtualPath(szFileVirtualPath).toAscii().data(), g_storage_type, iOutSize, iHashCRC32);
+    PutFileData(this->pEpkInstance, this->lFilesList.at(this->iPointer++).toLatin1().data(), g_storage_type, &iOutSize, &iHashCRC32);
+    PutFile(this->pEixInstance, GetIntelVirtualPath(szFileVirtualPath).toLatin1().data(), g_storage_type, iOutSize, iHashCRC32);
 
     this->exit();
 }
